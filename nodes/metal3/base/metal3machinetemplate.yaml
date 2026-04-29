@@ -1,0 +1,19 @@
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: Metal3MachineTemplate
+metadata:
+  name: ${clusterName}
+spec:
+  template:
+    spec:
+      automatedCleaningMode: disabled
+      dataTemplate:
+        name: ${clusterName}
+      hostSelector:
+        matchLabels:
+          en: placeholder
+          gpu: placeholder
+      image:
+        checksum: ${artifactBaseUrl}/flatcar/${flatcarVersion}/flatcar_production_openstack_image.img.DIGESTS
+        checksumType: md5
+        url: ${artifactBaseUrl}/flatcar/${flatcarVersion}/flatcar_production_openstack_image.img

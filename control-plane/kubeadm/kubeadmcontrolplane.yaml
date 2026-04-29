@@ -1,0 +1,14 @@
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+kind: KubeadmControlPlane
+metadata:
+  name: ${clusterName}-cp
+spec:
+  kubeadmConfigSpec: {}
+  machineTemplate:
+    spec:
+      infrastructureRef:
+        apiGroup: infrastructure.cluster.x-k8s.io
+        kind: placeholder
+        name: cp-${cpCores}x${cpMem}x${cpDisk}
+  replicas: ${cpCount}
+  version: ${kubeVersion}

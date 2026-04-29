@@ -1,0 +1,3 @@
+- op: add
+  path: /metadata/annotations/clusters.local~1pool
+  value: worker

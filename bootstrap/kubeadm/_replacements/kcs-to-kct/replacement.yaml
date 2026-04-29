@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: kcs-to-kct
+replacements:
+  - source:
+      kind: KubeadmConfigSpec
+      name: kcs
+      fieldPath: spec
+    targets:
+      - select:
+          kind: KubeadmConfigTemplate
+        fieldPaths:
+          - spec.template.spec

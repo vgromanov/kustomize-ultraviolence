@@ -1,0 +1,36 @@
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: VSphereMachineTemplate
+metadata:
+  name: cp-${cpCores}x${cpMem}x${cpDisk}
+  labels:
+    cluster.x-k8s.io/control-plane: "true"
+  annotations:
+    internal.config.kubernetes.io/needsHashSuffix: enabled
+spec:
+  template:
+    spec:
+      cloneMode: FullClone
+      datacenter: ${vcDC}
+      datastore: ${vcDS:=""}
+      diskGiB: ${cpDisk}
+      folder: ${vcFolder}
+      memoryMiB: ${cpMem}
+      network:
+        devices:
+          - dhcp4: false
+            addressesFromPools:
+              - apiGroup: ipam.cluster.x-k8s.io
+                kind: InClusterIPPool
+                name: ippool
+            networkName: ${vcNetwork}
+            nameservers:
+              - 192.0.2.10
+              - 192.0.2.11
+              - 192.0.2.12
+      numCPUs: ${cpCores}
+      os: Linux
+      resourcePool: ${vcRP:=""}
+      server: ${vcServer}
+      storagePolicyName: ${vcStoragePolicy:=""}
+      template: ${vcTemplate}
+      thumbprint: ${vcThumbprint}

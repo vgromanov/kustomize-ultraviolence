@@ -1,0 +1,16 @@
+# Local test harness: mirrors Flux (path /base + same spec.components as manifest).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base/manifests
+components:
+  - ../../_refs
+  - ../../infra/metal3
+  - ../../control-plane/kamaji
+  - ../../control-plane/kamaji-mz
+  - ../../topologies/demo-baremetal
+  - ../../zones/north/metal3
+  - ../../zones/south/metal3
+  - ../../zones/east/metal3
+  - ../../zones/_postpatches/metal3-ippool-meta
+  - ../../bootstrap/kubeadm/metal3

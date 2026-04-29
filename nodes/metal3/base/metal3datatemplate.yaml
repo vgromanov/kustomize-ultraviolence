@@ -1,0 +1,44 @@
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: Metal3DataTemplate
+metadata:
+  name: ${clusterName}
+spec:
+  clusterName: ${clusterName}
+  metaData:
+    objectNames:
+      - key: machine_name
+        object: machine
+  networkData:
+    links:
+      ethernets:
+        - type: "phy"
+          id: "placeholder-if0"
+          macAddress:
+            fromHostInterface: "placeholder-if0"
+        - type: "phy"
+          id: "placeholder-if1"
+          macAddress:
+            fromHostInterface: "placeholder-if1"
+      bonds:
+        - id: "bond0"
+          mtu: 1500
+          macAddress:
+            fromHostInterface: "placeholder-if0"
+          bondXmitHashPolicy: "layer2+3"
+          bondMode: "802.3ad"
+          bondLinks:
+            - placeholder-if0
+            - placeholder-if1
+    networks:
+      ipv4:
+        - id: "bond0"
+          link: "bond0"
+          ipAddressFromIPPool: ${clusterName}
+          routes:
+            - network: "0.0.0.0"
+              prefix: 0
+              gateway:
+                fromIPPool: ${clusterName}
+              services:
+                dnsFromIPPool: ${clusterName}

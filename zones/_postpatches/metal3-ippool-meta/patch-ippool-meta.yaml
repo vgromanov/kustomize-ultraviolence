@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: metal3-ippool-meta
+target:
+  kind: IPPool
+patch: |-
+  - op: add
+    path: /spec/clusterName
+    value: ${clusterName}
+  - op: add
+    path: /spec/namePrefix
+    value: ${clusterName}

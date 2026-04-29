@@ -1,0 +1,31 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: vsphere-vmt-common
+target:
+  kind: VSphereMachineTemplate
+patch: |-
+  - op: add
+    path: /spec/template/spec/cloneMode
+    value: FullClone
+  - op: add
+    path: /spec/template/spec/datacenter
+    value: ${vcDC}
+  - op: add
+    path: /spec/template/spec/datastore
+    value: ${vcDS:=""}
+  - op: add
+    path: /spec/template/spec/folder
+    value: ${vcFolder}
+  - op: add
+    path: /spec/template/spec/os
+    value: Linux
+  - op: add
+    path: /spec/template/spec/server
+    value: ${vcServer}
+  - op: add
+    path: /spec/template/spec/storagePolicyName
+    value: ${vcStoragePolicy:=""}
+  - op: add
+    path: /spec/template/spec/thumbprint
+    value: ${vcThumbprint}

@@ -1,0 +1,10 @@
+apiVersion: builtin
+kind: PrefixSuffixTransformer
+metadata:
+  name: south
+prefix: "south-"
+fieldSpecs:
+  - kind: PrefixSuffixTransformer
+    path: metadata/name
+  - kind: PrefixSuffixTransformer
+    path: prefix

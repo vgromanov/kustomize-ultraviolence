@@ -1,0 +1,10 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: nongpu-hostlabel
+target:
+  kind: Metal3MachineTemplate
+patch: |-
+  - op: replace
+    path: /spec/template/spec/hostSelector/matchLabels/gpu
+    value: "false"

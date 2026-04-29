@@ -1,0 +1,11 @@
+- op: add
+  path: /metadata/labels
+  value:
+    infrastructure.cluster.x-k8s.io/failure-domain: east-${clusterName}
+    topology.kubernetes.io/zone: east
+- op: add
+  path: /spec/template/metadata/labels/topology.kubernetes.io~1region
+  value: sitea
+- op: add
+  path: /spec/template/metadata/labels/topology.kubernetes.io~1zone
+  value: east

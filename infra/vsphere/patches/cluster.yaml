@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/infrastructureRef/kind
+  value: VSphereCluster
+- op: replace
+  path: /spec/infrastructureRef/name
+  value: vsphere

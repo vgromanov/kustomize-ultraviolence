@@ -1,0 +1,19 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: etcd-client
+spec:
+  commonName: root
+  secretName: etcd-client-tls
+  usages:
+    - "signing"
+    - "key encipherment"
+    - "client auth"
+  privateKey:
+    rotationPolicy: Always
+    algorithm: RSA
+    size: 4096
+  issuerRef:
+    name: etcd-issuer
+    kind: Issuer

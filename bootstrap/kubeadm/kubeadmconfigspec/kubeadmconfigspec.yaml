@@ -1,0 +1,41 @@
+apiVersion: bootstrap.clusters.local/v1alpha1
+kind: KubeadmConfigSpec
+metadata:
+  name: kcs
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  files:
+    - content: ${kubeVersion}
+      path: /etc/kubernetes/VERSION
+      owner: root:root
+      permissions: "0400"
+    - content: netplan-placeholder
+      owner: root:root
+      path: /opt/hack.sh
+      permissions: "0755"
+  format: ignition
+  ignition:
+    containerLinuxConfig:
+      additionalConfig: placeholder
+  joinConfiguration:
+    nodeRegistration:
+      criSocket: /var/run/containerd/containerd.sock
+      name: $${COREOS_CUSTOM_HOSTNAME}
+  preKubeadmCommands:
+    - systemctl stop docker && systemctl disable docker
+    - export binaries="kubectl kubeadm kubectl-convert kubelet kube-proxy"
+    - cd /opt/bin
+    - export kubeVersion=$(cat /etc/kubernetes/VERSION)
+    - |-
+      for b in $binaries; do
+        curl -k -fSL -R -J -O ${artifactBaseUrl}/kubernetes/$${kubeVersion}/kubernetes/node/bin/$b && chmod +x $b;
+      done
+    - PATH=$PATH:/opt/bin
+    - envsubst < /etc/kubeadm.yml > /etc/kubeadm.yml.tmp
+    - mv /etc/kubeadm.yml.tmp /etc/kubeadm.yml
+  users:
+    - name: core
+      sshAuthorizedKeys:
+        - ${sshKey}
+      sudo: ALL=(ALL) NOPASSWD:ALL

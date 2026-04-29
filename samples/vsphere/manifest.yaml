@@ -1,0 +1,61 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: test
+  labels:
+    cluster.x-k8s.io/cluster-name: test
+  annotations:
+    kustomize.toolkit.fluxcd.io/kustomization-path: "/base"
+spec:
+  components:
+    - ../_refs
+    - ../infra/vsphere
+    - ../topologies/demo-vsphere
+    - ../zones/north/vsphere
+    - ../zones/south/vsphere
+    - ../zones/east/vsphere
+    - ../zones/_postpatches/vsphere-vmt-common
+    - ../bootstrap/kubeadm/vsphere
+    - ../control-plane/kubeadm
+    - ../addons/ssh-keys
+  force: false
+  prune: true
+  interval: 10m0s
+  path: /base
+  sourceRef:
+    kind: GitRepository
+    name: capi-mgmt
+    namespace: flux-system
+  postBuild:
+    substitute:
+      breederCluster: breeder.example.com
+      bundleRelease: bundle-v1.28-rolling-release
+      clusterFQDN: demo-vsphere.cluster.example.com
+      clusterName: demo-vsphere
+      clusterVRF: DMZ5V
+      controlPlaneEndpoint: 192.0.2.100
+      cpCount: "3"
+      cpCores: "2"
+      cpDisk: "25"
+      cpMem: "8192"
+      kubeVersion: v1.28.8
+      imageRepository: "${imageRepository}"
+      artifactBaseUrl: "${artifactBaseUrl}"
+      podCIDR: 10.128.0.0/16
+      profileName: dev-minimal
+      pvStoragePolicy: "kaas-p-pv-policy"
+      sshKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyReplaceWithYourOwn ops@example.com
+      svcCIDR: 10.96.0.0/16
+      vcDC: "SiteA-DC"
+      vcFolder: "demo-vsphere"
+      vcNetwork: placeholder
+      vcRP: "demo-vsphere"
+      vcServer: 'vcenter.example.com'
+      vcStoragePolicy: 'kaas-p-vm-policy'
+      vcTemplate: 'capi-templates/north-flatcar-stable-3815.2.0-plain'
+      vcThumbprint: '00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00'  # placeholder
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
+      - kind: Secret
+        name: flux-cluster-secrets

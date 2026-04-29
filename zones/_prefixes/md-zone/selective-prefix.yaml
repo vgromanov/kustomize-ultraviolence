@@ -1,0 +1,30 @@
+apiVersion: builtin
+kind: PrefixSuffixTransformer
+metadata:
+  name: md-zone
+prefix: ""
+fieldSpecs:
+  - kind: InClusterIPPool
+    path: metadata/name
+  - kind: MachineDeployment
+    path: metadata/name
+  - kind: VSphereDeploymentZone
+    path: metadata/name
+  - kind: VSphereFailureDomain
+    path: metadata/name
+  - kind: VSphereMachineTemplate
+    path: metadata/name
+  - kind: Metal3MachineTemplate
+    path: metadata/name
+  - kind: Metal3DataTemplate
+    path: metadata/name
+  - kind: IPPool
+    path: metadata/name
+  - kind: NodeTopology
+    path: metadata/name
+  - kind: ReplacementTransformer
+    path: replacements/source/name
+  - kind: ReplacementTransformer
+    path: replacements/targets/select/name
+  - kind: ReplacementTransformer
+    path: replacements/targets/select/labelSelector

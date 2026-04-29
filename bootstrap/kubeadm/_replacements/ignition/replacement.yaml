@@ -1,0 +1,15 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: ignition-content-into-kcs
+replacements:
+  - source:
+      kind: ConfigMap
+      name: ignition
+      fieldPath: data.ignition
+    targets:
+      - select:
+          kind: KubeadmConfigSpec
+          name: kcs
+        fieldPaths:
+          - spec.ignition.containerLinuxConfig.additionalConfig

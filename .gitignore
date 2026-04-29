@@ -1,0 +1,7 @@
+.DS_Store
+.idea/
+.vscode/
+.kustomize-mcp/
+*.bak
+res-*.yaml
+*.out

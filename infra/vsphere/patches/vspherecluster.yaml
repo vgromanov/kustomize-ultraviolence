@@ -1,0 +1,10 @@
+- op: add
+  path: /spec/controlPlaneEndpoint
+  value:
+    host: ${controlPlaneEndpoint}
+    port: 6443
+- op: add
+  path: /spec/failureDomainSelector
+  value:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: ${clusterName}

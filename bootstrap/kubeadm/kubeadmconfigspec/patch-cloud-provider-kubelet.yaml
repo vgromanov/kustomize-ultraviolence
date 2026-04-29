@@ -1,0 +1,22 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: kcs-cloud-provider-kubelet
+target:
+  kind: KubeadmConfigSpec
+  name: kcs
+patch: |-
+  - op: add
+    path: /spec/joinConfiguration/nodeRegistration/kubeletExtraArgs
+    value:
+      - name: cloud-provider
+        value: external
+  - op: add
+    path: /spec/initConfiguration
+    value:
+      nodeRegistration:
+        criSocket: /var/run/containerd/containerd.sock
+        name: $${COREOS_CUSTOM_HOSTNAME}
+        kubeletExtraArgs:
+          - name: cloud-provider
+            value: external

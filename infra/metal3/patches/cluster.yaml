@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/infrastructureRef/kind
+  value: Metal3Cluster
+- op: replace
+  path: /spec/infrastructureRef/name
+  value: ${clusterName}

@@ -1,0 +1,15 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: vsphere-cp-network-from-topology
+replacements:
+  - source:
+      kind: ZoneTopology
+      name: north-zone-topology
+      fieldPath: spec.vcNetwork
+    targets:
+      - select:
+          kind: VSphereMachineTemplate
+          labelSelector: "cluster.x-k8s.io/control-plane=true"
+        fieldPaths:
+          - spec.template.spec.network.devices.0.networkName

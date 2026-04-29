@@ -1,0 +1,40 @@
+---
+apiVersion: kamaji.clastix.io/v1alpha1
+kind: DataStore
+metadata:
+  name: ${clusterName}
+  labels:
+    kamaji.clastix.io/datastore: etcd
+    app.kubernetes.io/name: kamaji
+    app.kubernetes.io/instance: kamaji
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/version: "v1.0.0"
+spec:
+  driver: etcd
+  endpoints:
+    - etcd-0.etcd-headless.${clusterName}.svc.${breederCluster}:2379
+    - etcd-1.etcd-headless.${clusterName}.svc.${breederCluster}:2379
+    - etcd-2.etcd-headless.${clusterName}.svc.${breederCluster}:2379
+  tlsConfig:
+    certificateAuthority:
+      certificate:
+        secretReference:
+          name: etcd-ca-tls
+          namespace: ${clusterName}
+          keyPath: tls.crt
+      privateKey:
+        secretReference:
+          name: etcd-ca-tls
+          namespace: ${clusterName}
+          keyPath: tls.key
+    clientCertificate:
+      certificate:
+        secretReference:
+          name: etcd-client-tls
+          namespace: ${clusterName}
+          keyPath: tls.crt
+      privateKey:
+        secretReference:
+          name: etcd-client-tls
+          namespace: ${clusterName}
+          keyPath: tls.key

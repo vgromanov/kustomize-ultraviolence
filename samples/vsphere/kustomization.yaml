@@ -1,0 +1,21 @@
+# Local test harness: mirrors Flux (path /base + same spec.components as manifest).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ${clusterName}
+labels:
+  - includeSelectors: true
+    pairs:
+      cluster.x-k8s.io/cluster-name: ${clusterName}
+resources:
+  - ../../base/manifests
+components:
+  - ../../_refs
+  - ../../infra/vsphere
+  - ../../topologies/demo-vsphere
+  - ../../zones/north/vsphere
+  - ../../zones/south/vsphere
+  - ../../zones/east/vsphere
+  - ../../zones/_postpatches/vsphere-vmt-common
+  - ../../bootstrap/kubeadm/vsphere
+  - ../../control-plane/kubeadm
+  - ../../addons/ssh-keys

@@ -1,0 +1,17 @@
+- op: replace
+  path: /metadata/name
+  value: mdi-0
+- op: replace
+  path: /spec/replicas
+  value: ${ingressCount}
+- op: replace
+  path: /spec/selector/matchLabels/cluster.x-k8s.io~1machine-role
+  value: ingress
+- op: replace
+  path: /spec/template/metadata/labels/cluster.x-k8s.io~1machine-role
+  value: ingress
+- op: remove
+  path: /spec/template/metadata/labels/node-role.kubernetes.io~1worker
+- op: add
+  path: /spec/template/metadata/labels/node-role.kubernetes.io~1ingress
+  value: ""

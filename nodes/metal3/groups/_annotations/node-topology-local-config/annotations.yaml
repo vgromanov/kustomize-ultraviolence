@@ -1,0 +1,10 @@
+apiVersion: builtin
+kind: AnnotationsTransformer
+metadata:
+  name: node-topology-local-config
+annotations:
+  config.kubernetes.io/local-config: "true"
+fieldSpecs:
+  - path: metadata/annotations
+    kind: NodeTopology
+    create: true

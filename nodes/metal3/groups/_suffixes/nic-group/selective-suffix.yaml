@@ -1,0 +1,20 @@
+apiVersion: builtin
+kind: PrefixSuffixTransformer
+metadata:
+  name: nic-group
+suffix: ""
+fieldSpecs:
+  - kind: MachineDeployment
+    path: metadata/name
+  - kind: Metal3MachineTemplate
+    path: metadata/name
+  - kind: Metal3DataTemplate
+    path: metadata/name
+  - kind: NodeTopology
+    path: metadata/name
+  - kind: ReplacementTransformer
+    path: replacements/source/name
+  - kind: ReplacementTransformer
+    path: replacements/targets/select/name
+  - kind: ReplacementTransformer
+    path: replacements/targets/select/labelSelector

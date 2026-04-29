@@ -1,0 +1,15 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: kube-vip-content
+replacements:
+  - source:
+      kind: ConfigMap
+      name: kube-vip
+      fieldPath: data.kube-vip
+    targets:
+      - select:
+          kind: KubeadmConfigSpec
+          name: kcs
+        fieldPaths:
+          - spec.files.[path=/etc/kubernetes/manifests/kube-vip.yaml].content

@@ -1,0 +1,15 @@
+- op: add
+  path: /spec/template/spec/files/-
+  value:
+    content: placeholder
+    owner: root:root
+    path: /opt/hack.sh
+    permissions: "0755"
+- op: add
+  path: /spec/template/spec/format
+  value: ignition
+- op: add
+  path: /spec/template/spec/ignition
+  value:
+    containerLinuxConfig:
+      additionalConfig: placeholder

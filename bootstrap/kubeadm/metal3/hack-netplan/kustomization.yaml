@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+configMapGenerator:
+  - name: hack-netplan
+    files:
+      - hack-netplan=hack.sh
+    options:
+      disableNameSuffixHash: true
+      annotations:
+        config.kubernetes.io/local-config: "true"

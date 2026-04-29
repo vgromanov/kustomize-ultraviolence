@@ -1,0 +1,34 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: metal3-nic-replacements
+replacements:
+  - source:
+      kind: NodeTopology
+      name: metal3-nic
+      fieldPath: spec.if0
+    targets:
+      - select: { kind: Metal3DataTemplate }
+        fieldPaths:
+          - spec.networkData.links.ethernets.0.id
+          - spec.networkData.links.ethernets.0.macAddress.fromHostInterface
+          - spec.networkData.links.bonds.0.macAddress.fromHostInterface
+          - spec.networkData.links.bonds.0.bondLinks.0
+  - source:
+      kind: NodeTopology
+      name: metal3-nic
+      fieldPath: spec.if1
+    targets:
+      - select: { kind: Metal3DataTemplate }
+        fieldPaths:
+          - spec.networkData.links.ethernets.1.id
+          - spec.networkData.links.ethernets.1.macAddress.fromHostInterface
+          - spec.networkData.links.bonds.0.bondLinks.1
+  - source:
+      kind: NodeTopology
+      name: metal3-nic
+      fieldPath: spec.hostLabel
+    targets:
+      - select: { kind: Metal3MachineTemplate }
+        fieldPaths:
+          - spec.template.spec.hostSelector.matchLabels.en

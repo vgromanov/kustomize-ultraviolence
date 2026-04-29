@@ -1,0 +1,16 @@
+- op: add
+  path: /spec/deployment/affinity
+  value:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/instance: etcd
+              app.kubernetes.io/managed-by: etcd-operator
+          topologyKey: kubernetes.io/hostname
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              kamaji.clastix.io/name: ${clusterName}
+          topologyKey: topology.kubernetes.io/zone

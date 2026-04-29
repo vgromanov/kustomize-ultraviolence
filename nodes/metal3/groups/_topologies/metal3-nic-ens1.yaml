@@ -1,0 +1,9 @@
+apiVersion: topology.clusters.local/v1alpha1
+kind: NodeTopology
+metadata:
+  name: metal3-nic-ens1
+  annotations: {}
+spec:
+  if0: ens1f0np0
+  if1: ens1f1np1
+  hostLabel: ens1

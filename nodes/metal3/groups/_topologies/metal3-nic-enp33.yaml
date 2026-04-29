@@ -1,0 +1,9 @@
+apiVersion: topology.clusters.local/v1alpha1
+kind: NodeTopology
+metadata:
+  name: metal3-nic-enp33
+  annotations: {}
+spec:
+  if0: enp33s0f0np0
+  if1: enp33s0f1np1
+  hostLabel: enp33

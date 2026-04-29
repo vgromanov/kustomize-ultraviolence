@@ -1,0 +1,15 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: hack-netplan-content-into-kcs
+replacements:
+  - source:
+      kind: ConfigMap
+      name: hack-netplan
+      fieldPath: data.hack-netplan
+    targets:
+      - select:
+          kind: KubeadmConfigSpec
+          name: kcs
+        fieldPaths:
+          - spec.files.[path=/opt/hack.sh].content

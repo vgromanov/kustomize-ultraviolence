@@ -1,0 +1,5 @@
+- op: add
+  path: /metadata/labels
+  value:
+    infrastructure.cluster.x-k8s.io/failure-domain: south-${clusterName}
+    topology.kubernetes.io/zone: south

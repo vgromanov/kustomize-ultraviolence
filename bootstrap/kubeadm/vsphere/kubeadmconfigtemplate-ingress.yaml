@@ -1,0 +1,9 @@
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+kind: KubeadmConfigTemplate
+metadata:
+  name: ${clusterName}-ingress
+  annotations:
+    internal.config.kubernetes.io/needsHashSuffix: enabled
+spec:
+  template:
+    spec: {}

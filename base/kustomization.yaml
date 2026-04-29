@@ -1,0 +1,13 @@
+# Flux Kustomization path /base: merge spec.components into this root (zones, topology, …).
+# vSphere topology replacements are applied by zone/control-plane components via standalone transformers.
+# `kustomize build` this directory without Flux-injected components will fail on missing ZoneTopology sources.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - manifests
+
+labels:
+  - includeSelectors: true
+    pairs:
+      cluster.x-k8s.io/cluster-name: ${clusterName}

@@ -1,0 +1,43 @@
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
+kind: KamajiControlPlane
+metadata:
+  name: ${clusterName}-cp
+spec:
+  addons:
+    coreDNS:
+      imageRepository: ${imageRepository}
+      imageTag: v1.10.1
+    konnectivity:
+      agent:
+        image: ${imageRepository}/kas-network-proxy/proxy-agent
+        version: v0.28.6
+      server:
+        port: 8132
+        image: ${imageRepository}/kas-network-proxy/proxy-server
+        version: v0.28.6
+  controlPlaneEndpoint:
+    host: ${controlPlaneEndpoint}
+    port: 6443
+  dataStoreName: ${clusterName}
+  deployment:
+    additionalMetadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: ${clusterName}
+    podAdditionalMetadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: ${clusterName}
+  registry: ${imageRepository}
+  kubelet:
+    cgroupfs: systemd
+    preferredAddressTypes:
+      - InternalIP
+      - ExternalIP
+  network:
+    certSANs:
+      - ${clusterName}-cp.${clusterName}.svc.${breederCluster}
+      - ${clusterName}-cp.${clusterName}.svc
+      - ${clusterName}.${breederCluster}
+    serviceType: LoadBalancer
+  replicas: 3
+  version: ${kubeVersion}

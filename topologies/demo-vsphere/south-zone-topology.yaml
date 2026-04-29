@@ -1,0 +1,55 @@
+apiVersion: topology.clusters.local/v1alpha1
+kind: ZoneTopology
+metadata:
+  name: south-zone-topology
+  annotations: {}
+spec:
+  region: sitea
+  zone: south
+  ippool:
+    addresses:
+      - 203.0.113.0-203.0.113.5
+    gateway: 203.0.113.1
+    prefix: 24
+  vcNetwork: APPMGMT-SOUTH-V282
+  groups:
+    worker:
+      replicas: 1
+      vmtSpec:
+        diskGiB: 64
+        memoryMiB: 32768
+        numCPUs: 8
+        resourcePool: /SiteA-DC/host/SiteA-South-ESXi01/SiteA-South-Cluster01/Resources/south-${clusterName}
+        template: capi-templates/south-flatcar-stable-3815.2.0-plain
+        network:
+          devices:
+            - dhcp4: false
+              addressesFromPools:
+                - apiGroup: ipam.cluster.x-k8s.io
+                  kind: InClusterIPPool
+                  name: ippool
+              networkName: APPMGMT-SOUTH-V282
+              nameservers:
+                - 192.0.2.10
+                - 192.0.2.11
+                - 192.0.2.12
+    ingress:
+      replicas: 1
+      vmtSpec:
+        diskGiB: 64
+        memoryMiB: 32768
+        numCPUs: 8
+        resourcePool: /SiteA-DC/host/SiteA-South-ESXi01/SiteA-South-Cluster01/Resources/south-${clusterName}
+        template: capi-templates/south-flatcar-stable-3815.2.0-plain
+        network:
+          devices:
+            - dhcp4: false
+              addressesFromPools:
+                - apiGroup: ipam.cluster.x-k8s.io
+                  kind: InClusterIPPool
+                  name: ippool
+              networkName: APPMGMT-SOUTH-V282
+              nameservers:
+                - 192.0.2.10
+                - 192.0.2.11
+                - 192.0.2.12

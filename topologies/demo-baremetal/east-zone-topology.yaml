@@ -1,0 +1,36 @@
+apiVersion: topology.clusters.local/v1alpha1
+kind: ZoneTopology
+metadata:
+  name: east-zone-topology
+  annotations: {}
+spec:
+  region: sitea
+  zone: east
+  vcNetwork: ""
+  groups:
+    enp33-gpu:
+      replicas: 1
+    enp33-nongpu:
+      replicas: 1
+    ens81-gpu:
+      replicas: 1
+    ens81-nongpu:
+      replicas: 1
+    eno5eno6-gpu:
+      replicas: 1
+    eno5eno6-nongpu:
+      replicas: 1
+  ippool:
+    dnsServers:
+      - 192.0.2.10
+      - 192.0.2.11
+      - 192.0.2.12
+    addresses:
+      - 192.0.2.150-192.0.2.152
+    gateway: 192.0.2.1
+    prefix: "24"
+    pools:
+      - start: 192.0.2.150
+        end: 192.0.2.152
+        prefix: 24
+        gateway: 192.0.2.1

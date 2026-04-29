@@ -1,0 +1,6 @@
+---
+apiVersion: ipam.metal3.io/v1alpha1
+kind: IPPool
+metadata:
+  name: ${clusterName}
+spec: {}

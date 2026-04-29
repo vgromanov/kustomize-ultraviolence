@@ -1,0 +1,26 @@
+- op: add
+  path: /spec/postBuild/substitute/pvStoragePolicy
+  value: ${pvStoragePolicy}
+- op: add
+  path: /spec/postBuild/substitute/vcDatacenter
+  value: ${vcDC}
+- op: add
+  path: /spec/postBuild/substitute/vcNetwork
+  value: ${vcNetwork:=placeholder}
+- op: add
+  path: /spec/postBuild/substitute/vcServer
+  value: ${vcServer}
+- op: add
+  path: /spec/postBuild/substitute/vcThumbprint
+  value: ${vcThumbprint}
+- op: add
+  path: /spec/patches/-
+  value:
+    patch: |
+        - op: replace
+          path: /spec/postBuild/substitute/pvStoragePolicy
+          value: "${pvStoragePolicy}"
+    target:
+      group: kustomize.toolkit.fluxcd.io/v1beta2
+      kind: Kustomization
+      name: in-cluster-vsphere-csi

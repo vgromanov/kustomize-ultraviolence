@@ -1,0 +1,4 @@
+# Provider-specific infra API kind for machineTemplate (vSphere here; swap patch for other providers).
+- op: replace
+  path: /spec/machineTemplate/spec/infrastructureRef/kind
+  value: VSphereMachineTemplate

@@ -1,0 +1,16 @@
+# Apply while the resource is still named mdw-0 (before rename patch).
+- op: add
+  path: /metadata/annotations/clusters.local~1pool
+  value: ingress
+- op: replace
+  path: /spec/template/spec/bootstrap/configRef/kind
+  value: KubeadmConfigTemplate
+- op: replace
+  path: /spec/template/spec/bootstrap/configRef/name
+  value: ${clusterName}-ingress
+- op: replace
+  path: /spec/template/spec/infrastructureRef/kind
+  value: VSphereMachineTemplate
+- op: replace
+  path: /spec/template/spec/infrastructureRef/name
+  value: ingress

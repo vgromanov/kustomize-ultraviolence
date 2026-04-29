@@ -1,0 +1,10 @@
+- op: add
+  path: /spec/podTemplate/spec/affinity
+  value:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/instance: etcd
+              app.kubernetes.io/managed-by: etcd-operator
+          topologyKey: topology.kubernetes.io/zone

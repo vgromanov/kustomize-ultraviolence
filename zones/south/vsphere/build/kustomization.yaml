@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+components:
+  - ../../../../_refs
+
+transformers:
+  - ../../_prefixes/md-zone
+resources:
+  - ../../../../nodes/vsphere
+  - inclusterippool.yaml
+  - vspherefailuredomain.yaml
+  - vspheredeploymentzone.yaml
+patches:
+  - target:
+      kind: MachineDeployment
+      name: mdw-0
+    path: patches/machinedeployment.yaml
+  - target:
+      kind: VSphereMachineTemplate
+      name: worker
+    path: patches/vspheremachinetemplate-worker.yaml
+  - target:
+      kind: MachineDeployment
+      name: mdi-0
+    path: patches/machinedeployment.yaml
+  - target:
+      kind: VSphereMachineTemplate
+      name: ingress
+    path: patches/vspheremachinetemplate-worker.yaml

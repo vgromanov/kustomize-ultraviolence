@@ -1,0 +1,37 @@
+nameReference:
+  - kind: VSphereMachineTemplate
+    fieldSpecs:
+      - path: /spec/machineTemplate/spec/infrastructureRef/name
+        kind: KubeadmControlPlane
+      - path: /spec/template/spec/infrastructureRef/name
+        kind: MachineDeployment
+  - kind: KubeadmConfigTemplate
+    fieldSpecs:
+      - path: /spec/template/spec/bootstrap/configRef/name
+        kind: MachineDeployment
+  - kind: InClusterIPPool
+    fieldSpecs:
+      - path: spec/topology/networkConfigurations/addressesFromPools/name
+        kind: VSphereFailureDomain
+      - path: /spec/template/spec/network/devices/addressesFromPools/name
+        kind: VSphereMachineTemplate
+  - kind: VSphereFailureDomain
+    fieldSpecs:
+      - path: /spec/failureDomain
+        kind: VSphereDeploymentZone
+  - kind: IPPool
+    fieldSpecs:
+      - path: /spec/networkData/networks/ipv4/ipAddressFromIPPool
+        kind: Metal3DataTemplate
+      - path: /spec/networkData/networks/ipv4/routes/gateway/fromIPPool
+        kind: Metal3DataTemplate
+      - path: /spec/networkData/networks/ipv4/routes/services/dnsFromIPPool
+        kind: Metal3DataTemplate
+  - kind: Metal3DataTemplate
+    fieldSpecs:
+      - path: /spec/template/spec/dataTemplate/name
+        kind: Metal3MachineTemplate
+  - kind: Metal3MachineTemplate
+    fieldSpecs:
+      - path: /spec/template/spec/infrastructureRef/name
+        kind: MachineDeployment

@@ -1,0 +1,28 @@
+---
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: capi-machine-role
+labels:
+  cluster.x-k8s.io/machine-role: worker-gpu
+fieldSpecs:
+  - path: metadata/labels
+    kind: MachineDeployment
+    create: true
+  - path: spec/template/metadata/labels
+    kind: MachineDeployment
+    create: true
+  - path: spec/selector/matchLabels
+    kind: MachineDeployment
+    create: true
+---
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: k8s-node-role
+labels:
+  node-role.kubernetes.io/worker-gpu: ""
+fieldSpecs:
+  - path: spec/template/metadata/labels
+    kind: MachineDeployment
+    create: true

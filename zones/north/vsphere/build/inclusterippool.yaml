@@ -1,0 +1,12 @@
+apiVersion: ipam.cluster.x-k8s.io/v1alpha2
+kind: InClusterIPPool
+metadata:
+  name: ippool
+  labels:
+    infrastructure.cluster.x-k8s.io/failure-domain: north-${clusterName}
+    topology.kubernetes.io/zone: north
+spec:
+  addresses:
+    - ${ipPoolAddressesNorth}
+  gateway: ${ipPoolGWNorth}
+  prefix: ${ipPoolPrefixNorth}

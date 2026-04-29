@@ -1,0 +1,50 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: test
+  labels:
+    cluster.x-k8s.io/cluster-name: test
+  annotations:
+    kustomize.toolkit.fluxcd.io/kustomization-path: "/base"
+spec:
+  components:
+    - ../_refs
+    - ../infra/metal3
+    - ../control-plane/kamaji
+    - ../control-plane/kamaji-mz
+    - ../topologies/demo-baremetal
+    - ../zones/north/metal3
+    - ../zones/south/metal3
+    - ../zones/east/metal3
+    - ../zones/_postpatches/metal3-ippool-meta
+    - ../bootstrap/kubeadm/metal3
+  force: false
+  prune: true
+  interval: 10m0s
+  path: /base
+  sourceRef:
+    kind: GitRepository
+    name: capi-mgmt
+    namespace: flux-system
+  postBuild:
+    substitute:
+      breederCluster: breeder.example.com
+      bundleRelease: bundle-v1.28-rolling-release
+      clusterFQDN: demo-baremetal.cluster.example.com
+      clusterName: demo-baremetal
+      clusterVRF: APPMGMT
+      controlPlaneEndpoint: 192.0.2.100
+      flatcarVersion: 4230.1.1
+      kubeVersion: v1.29.15
+      nvidiaDriverVersion: 570.86.15
+      imageRepository: "${imageRepository}"
+      artifactBaseUrl: "${artifactBaseUrl}"
+      podCIDR: 10.128.0.0/16
+      profileName: dev-minimal
+      sshKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyReplaceWithYourOwn ops@example.com
+      svcCIDR: 10.96.0.0/16
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
+      - kind: Secret
+        name: flux-cluster-secrets

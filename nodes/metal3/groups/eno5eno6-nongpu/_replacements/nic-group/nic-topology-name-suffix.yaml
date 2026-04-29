@@ -1,0 +1,8 @@
+apiVersion: builtin
+kind: PrefixSuffixTransformer
+metadata:
+  name: nic-topology-name-suffix
+suffix: -eno5eno6
+fieldSpecs:
+  - kind: ReplacementTransformer
+    path: replacements/source/name

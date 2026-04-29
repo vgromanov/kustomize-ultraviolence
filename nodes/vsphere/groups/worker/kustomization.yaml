@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../base
+  - vspheremachinetemplate-worker.yaml
+patches:
+  - target:
+      kind: MachineDeployment
+      name: mdw-0
+    path: patches/machinedeployment-pool-label.yaml

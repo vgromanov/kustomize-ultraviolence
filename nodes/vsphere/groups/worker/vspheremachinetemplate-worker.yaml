@@ -1,0 +1,9 @@
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: VSphereMachineTemplate
+metadata:
+  name: worker
+  annotations:
+    internal.config.kubernetes.io/needsHashSuffix: enabled
+spec:
+  template:
+    spec: {}

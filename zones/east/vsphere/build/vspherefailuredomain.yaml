@@ -1,0 +1,28 @@
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: VSphereFailureDomain
+metadata:
+  name: ${clusterName}
+  labels:
+    infrastructure.cluster.x-k8s.io/failure-domain: east-${clusterName}
+    topology.kubernetes.io/zone: east
+spec:
+  region:
+    autoConfigure: false
+    name: sitea
+    tagCategory: k8s-region
+    type: Datacenter
+  topology:
+    computeCluster: SiteA-East-Cluster01
+    datacenter: ${vcDC}
+    networkConfigurations:
+      - addressesFromPools:
+          - apiGroup: ipam.cluster.x-k8s.io
+            kind: InClusterIPPool
+            name: ippool
+        dhcp4: false
+        networkName: ${vcNetworkEast}
+  zone:
+    autoConfigure: false
+    name: east-az1
+    tagCategory: k8s-zone
+    type: ComputeCluster

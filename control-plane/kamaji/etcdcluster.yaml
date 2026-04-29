@@ -1,0 +1,28 @@
+---
+apiVersion: etcd.aenix.io/v1alpha1
+kind: EtcdCluster
+metadata:
+  name: etcd
+spec:
+  podTemplate:
+    metadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: ${clusterName}
+    spec:
+      containers:
+        - name: etcd
+          image: "${imageRepository}/etcd:3.5.12-0"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 2000m
+              memory: 2000Mi
+  security:
+    tls:
+      peerTrustedCASecret: etcd-peer-ca-tls
+      peerSecret: etcd-peer-tls
+      serverSecret: etcd-server-tls
+      clientTrustedCASecret: etcd-ca-tls
+      clientSecret: etcd-client-tls

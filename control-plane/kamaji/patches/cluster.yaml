@@ -1,0 +1,3 @@
+- op: replace
+  path: /spec/controlPlaneRef/kind
+  value: KamajiControlPlane

@@ -1,0 +1,29 @@
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: MachineDeployment
+metadata:
+  name: mdw-0
+spec:
+  clusterName: ${clusterName}
+  replicas: ${workerCount}
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: ${clusterName}
+      cluster.x-k8s.io/machine-role: worker
+  template:
+    metadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: ${clusterName}
+        cluster.x-k8s.io/machine-role: worker
+        node-role.kubernetes.io/worker: ""
+    spec:
+      bootstrap:
+        configRef:
+          apiGroup: bootstrap.cluster.x-k8s.io
+          kind: placeholder
+          name: placeholder
+      clusterName: ${clusterName}
+      infrastructureRef:
+        apiGroup: infrastructure.cluster.x-k8s.io
+        kind: placeholder
+        name: placeholder
+      version: ${kubeVersion}

@@ -1,0 +1,41 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: metal3-kcs-additions
+target:
+  kind: KubeadmConfigSpec
+  name: kcs
+patch: |-
+  - op: add
+    path: /spec/joinConfiguration/nodeRegistration/kubeletExtraArgs/-
+    value:
+      name: node-labels
+      value: metal3.io/uuid=BAREMETALHOST_UUID
+  - op: add
+    path: /spec/files/-
+    value:
+      content: |
+        NVIDIA_DRIVER_VERSION=${nvidiaDriverVersion}
+      owner: root:root
+      path: /etc/flatcar/nvidia-metadata
+      permissions: "0644"
+  - op: add
+    path: /spec/files/-
+    value:
+      content: |
+        #!/bin/bash
+        # NVIDIA driver installer (simplified for prototype)
+        echo "setup-nvidia placeholder"
+      owner: root:root
+      path: /opt/setup-nvidia
+      permissions: "0744"
+  - op: add
+    path: /spec/files/-
+    value:
+      content: |
+        #!/bin/bash
+        # NVIDIA fabric manager installer (simplified for prototype)
+        echo "setup-nvidia-fabricmanager placeholder"
+      owner: root:root
+      path: /opt/setup-nvidia-fabricmanager
+      permissions: "0744"

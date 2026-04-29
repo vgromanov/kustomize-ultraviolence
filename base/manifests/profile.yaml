@@ -1,0 +1,33 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ${clusterName}-profile-${profileName}
+  namespace: ${clusterName}
+spec:
+  components:
+    - ../../bundle
+  force: false
+  interval: 5m0s
+  path: ${profileBasePath:=/profiles}/${profileName}
+  postBuild:
+    substitute:
+      clusterEnvironment: prod
+      clusterFQDN: ${clusterFQDN}
+      clusterName: ${clusterName}
+      clusterVRF: ${clusterVRF}
+      controlPlaneEndpoint: ${controlPlaneEndpoint}
+      mgmtClusterName: ${breederCluster}
+      podCIDR: ${podCIDR}
+      teamId: "'${teamId:=000}'"
+      teamType: ${teamType:="agile"}
+      teleportClusterFamily: ${teleportClusterFamily:=Compute}
+      teleportEnvironment: ${teleportEnvironment:=Prod}
+  prune: true
+  sourceRef:
+    kind: OCIRepository
+    name: ${bundleRelease}
+    namespace: flux-system
+  targetNamespace: ${clusterName}
+  timeout: 5m0s
+  patches: []
+  # OCI certSecretRef: add a patch in a private overlay if the bundle OCI uses a private CA.

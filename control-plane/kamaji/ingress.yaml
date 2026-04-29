@@ -1,0 +1,21 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ${clusterName}-cp-manual
+  annotations:
+    external-dns.alpha.kubernetes.io/target: ingress.${breederCluster}
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ${clusterName}.${breederCluster}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ${clusterName}-cp
+                port:
+                  number: 6443

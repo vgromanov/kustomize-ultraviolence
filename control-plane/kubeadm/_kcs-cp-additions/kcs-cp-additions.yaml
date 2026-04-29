@@ -1,0 +1,81 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: kcs-cp-additions
+target:
+  kind: KubeadmConfigSpec
+  name: kcs
+patch: |-
+  - op: replace
+    path: /spec/files
+    value:
+      - content: placeholder
+        owner: root:root
+        path: /etc/kubernetes/manifests/kube-vip.yaml
+        permissions: "0644"
+      - content: |
+          127.0.0.1 localhost kubernetes
+        owner: root:root
+        path: /etc/kube-vip.hosts
+        permissions: "0644"
+      - content: netplan-placeholder
+        owner: root:root
+        path: /opt/hack.sh
+        permissions: "0755"
+      - content: ${kubeVersion}
+        owner: root:root
+        path: /etc/kubernetes/VERSION
+        permissions: "0400"
+      - content: |
+          # Allow arp announce for kube-vip
+          net.ipv4.conf.all.arp_announce = 1
+        owner: root:root
+        path: /etc/sysctl.d/12-kube-vip_arp_announce.conf
+        permissions: "0744"
+  - op: add
+    path: /spec/clusterConfiguration
+    value:
+      imageRepository: ${imageRepository}
+      apiServer:
+        certSANs:
+          - api.${clusterFQDN}
+          - kubernetes.default.svc.${clusterFQDN}
+      controllerManager:
+        extraArgs:
+          - name: cloud-provider
+            value: external
+  - op: replace
+    path: /spec/initConfiguration
+    value:
+      nodeRegistration:
+        criSocket: /var/run/containerd/containerd.sock
+        name: $${COREOS_CUSTOM_HOSTNAME}
+        kubeletExtraArgs:
+          - name: cloud-provider
+            value: external
+  - op: replace
+    path: /spec/joinConfiguration
+    value:
+      nodeRegistration:
+        ignorePreflightErrors:
+          - DirAvailable--etc-kubernetes-manifests
+        criSocket: /var/run/containerd/containerd.sock
+        name: $${COREOS_CUSTOM_HOSTNAME}
+        kubeletExtraArgs:
+          - name: cloud-provider
+            value: external
+  - op: replace
+    path: /spec/preKubeadmCommands
+    value:
+      - systemctl stop docker && systemctl disable docker
+      - export binaries="kubectl kubeadm kubectl-convert kubelet kube-proxy"
+      - export kubeVersion=$(cat /etc/kubernetes/VERSION)
+      - cd /opt/bin
+      - >-
+        for b in $binaries; do
+
+          curl -k -fSL -R -J -O ${artifactBaseUrl}/kubernetes/$${kubeVersion}/kubernetes/node/bin/$b && chmod +x $b;
+        done
+      - PATH=$PATH:/opt/bin
+      - envsubst < /etc/kubeadm.yml > /etc/kubeadm.yml.tmp
+      - mv /etc/kubeadm.yml.tmp /etc/kubeadm.yml

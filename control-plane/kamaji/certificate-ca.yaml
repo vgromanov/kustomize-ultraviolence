@@ -1,0 +1,25 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: etcd-ca
+spec:
+  isCA: true
+  usages:
+    - "signing"
+    - "key encipherment"
+    - "cert sign"
+  commonName: etcd-ca
+  subject:
+    organizations:
+      - ACME Inc.
+    organizationalUnits:
+      - Widgets
+  secretName: etcd-ca-tls
+  privateKey:
+    algorithm: RSA
+    size: 4096
+  issuerRef:
+    name: etcd-selfsigning-issuer
+    kind: Issuer
+    group: cert-manager.io

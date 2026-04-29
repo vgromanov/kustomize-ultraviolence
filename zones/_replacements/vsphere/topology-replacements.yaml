@@ -1,0 +1,65 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: topology-replacements-vsphere
+replacements:
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.groups.worker.vmtSpec
+    targets:
+      - select:
+          kind: VSphereMachineTemplate
+          name: worker
+        fieldPaths:
+          - spec.template.spec
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.ippool
+    targets:
+      - select:
+          kind: InClusterIPPool
+          name: ippool
+        fieldPaths:
+          - spec
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.vcNetwork
+    targets:
+      - select:
+          kind: VSphereFailureDomain
+          name: \${clusterName}
+        fieldPaths:
+          - spec.topology.networkConfigurations.0.networkName
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.groups.worker.replicas
+    targets:
+      - select:
+          kind: MachineDeployment
+          name: mdw-0
+        fieldPaths:
+          - spec.replicas
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.groups.ingress.vmtSpec
+    targets:
+      - select:
+          kind: VSphereMachineTemplate
+          name: ingress
+        fieldPaths:
+          - spec.template.spec
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.groups.ingress.replicas
+    targets:
+      - select:
+          kind: MachineDeployment
+          name: mdi-0
+        fieldPaths:
+          - spec.replicas
