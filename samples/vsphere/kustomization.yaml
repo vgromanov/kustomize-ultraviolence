@@ -18,4 +18,3 @@ components:
   - ../../zones/_postpatches/vsphere-vmt-common
   - ../../bootstrap/kubeadm/vsphere
   - ../../control-plane/kubeadm
-  - ../../addons/ssh-keys

@@ -34,8 +34,4 @@ spec:
     - PATH=$PATH:/opt/bin
     - envsubst < /etc/kubeadm.yml > /etc/kubeadm.yml.tmp
     - mv /etc/kubeadm.yml.tmp /etc/kubeadm.yml
-  users:
-    - name: core
-      sshAuthorizedKeys:
-        - ${sshKey}
-      sudo: ALL=(ALL) NOPASSWD:ALL
+  users: []

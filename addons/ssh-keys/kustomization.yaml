@@ -1,18 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 resources:
-  - sshkeys.yaml
+  - kubeadm-bootstrap-users.yaml
 replacements:
-- source:
-    kind: ConfigMap
-    name: ssh-keys
-    fieldPath: data.sshKeys
-  targets:
-  - select:
-      kind: KubeadmControlPlane
-    fieldPaths:
-      - spec.kubeadmConfigSpec.users.0.sshAuthorizedKeys
-  - select:
-      kind: KubeadmConfigTemplate
-    fieldPaths:
-      - spec.template.spec.users.0.sshAuthorizedKeys
+  - source:
+      kind: KubeadmBootstrapUsers
+      name: ssh-users
+      fieldPath: spec.users
+    targets:
+      - select:
+          kind: KubeadmConfigSpec
+          name: kcs
+        fieldPaths:
+          - spec.users

@@ -17,7 +17,6 @@ spec:
     - ../zones/_postpatches/vsphere-vmt-common
     - ../bootstrap/kubeadm/vsphere
     - ../control-plane/kubeadm
-    - ../addons/ssh-keys
   force: false
   prune: true
   interval: 10m0s
@@ -44,7 +43,6 @@ spec:
       podCIDR: 10.128.0.0/16
       profileName: dev-minimal
       pvStoragePolicy: "kaas-p-pv-policy"
-      sshKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyReplaceWithYourOwn ops@example.com
       svcCIDR: 10.96.0.0/16
       vcDC: "SiteA-DC"
       vcFolder: "demo-vsphere"

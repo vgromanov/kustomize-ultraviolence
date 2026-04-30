@@ -7,6 +7,7 @@ components:
   - ../kubeadmconfigspec
   - hack-netplan
   - ignition
+  - ../../../addons/ssh-keys
 
 transformers:
   - ../_replacements/hack-netplan/

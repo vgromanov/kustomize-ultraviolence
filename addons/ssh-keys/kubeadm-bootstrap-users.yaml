@@ -1,0 +1,12 @@
+apiVersion: bootstrap.clusters.local/v1alpha1
+kind: KubeadmBootstrapUsers
+metadata:
+  name: ssh-users
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  users:
+    - name: core
+      sshAuthorizedKeys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyReplaceWithYourOwn ops@example.com
+      sudo: ALL=(ALL) NOPASSWD:ALL

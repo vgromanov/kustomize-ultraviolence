@@ -41,7 +41,6 @@ spec:
       artifactBaseUrl: "${artifactBaseUrl}"
       podCIDR: 10.128.0.0/16
       profileName: dev-minimal
-      sshKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyReplaceWithYourOwn ops@example.com
       svcCIDR: 10.96.0.0/16
     substituteFrom:
       - kind: ConfigMap
