@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: kcs-to-kcp
+replacements:
+  - source:
+      kind: KubeadmConfigSpec
+      name: kcs
+      fieldPath: spec
+    targets:
+      - select:
+          kind: KubeadmControlPlane
+        fieldPaths:
+          - spec.kubeadmConfigSpec

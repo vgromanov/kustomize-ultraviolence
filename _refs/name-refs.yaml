@@ -1,4 +1,10 @@
 nameReference:
+  - kind: KubevirtMachineTemplate
+    fieldSpecs:
+      - path: /spec/machineTemplate/spec/infrastructureRef/name
+        kind: KubeadmControlPlane
+      - path: /spec/template/spec/infrastructureRef/name
+        kind: MachineDeployment
   - kind: VSphereMachineTemplate
     fieldSpecs:
       - path: /spec/machineTemplate/spec/infrastructureRef/name

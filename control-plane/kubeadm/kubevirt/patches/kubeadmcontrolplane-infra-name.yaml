@@ -1,0 +1,4 @@
+# Point KubeadmControlPlane at the KubeVirt control-plane machine template name.
+- op: replace
+  path: /spec/machineTemplate/spec/infrastructureRef/name
+  value: cp-kubevirt

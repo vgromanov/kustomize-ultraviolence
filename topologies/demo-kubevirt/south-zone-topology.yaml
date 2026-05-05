@@ -1,0 +1,14 @@
+apiVersion: topology.clusters.local/v1alpha1
+kind: ZoneTopology
+metadata:
+  name: south-zone-topology
+  annotations: {}
+spec:
+  region: sitea
+  zone: south
+  groups:
+    worker:
+      replicas: 2
+      vmCores: 2
+      vmMemory: 4Gi
+      flatcarContainerDisk: registry.example.com/org/kubevirt/containerdisks/flatcar:${flatcarVersion}

@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+components:
+  - ../common
+
+resources:
+  - kubevirtmachinetemplate-cp.yaml
+
+transformers:
+  - _kcs-cp-additions-kubevirt/
+  - ../../../bootstrap/kubeadm/_replacements/hack-netplan/
+  - _replacements/kcs-to-kcp/
+
+patches:
+  - target:
+      kind: KubeadmControlPlane
+    path: patches/kubeadmcontrolplane-infra-kind.yaml
+  - target:
+      kind: KubeadmControlPlane
+    path: patches/kubeadmcontrolplane-infra-name.yaml

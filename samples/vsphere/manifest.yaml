@@ -16,7 +16,7 @@ spec:
     - ../zones/east/vsphere
     - ../zones/_postpatches/vsphere-vmt-common
     - ../bootstrap/kubeadm/vsphere
-    - ../control-plane/kubeadm
+    - ../control-plane/kubeadm/vsphere
   force: false
   prune: true
   interval: 10m0s

@@ -10,11 +10,10 @@ resources:
   - ../../base/manifests
 components:
   - ../../_refs
-  - ../../infra/vsphere
-  - ../../topologies/demo-vsphere
-  - ../../zones/north/vsphere
-  - ../../zones/south/vsphere
-  - ../../zones/east/vsphere
-  - ../../zones/_postpatches/vsphere-vmt-common
-  - ../../bootstrap/kubeadm/vsphere
-  - ../../control-plane/kubeadm/vsphere
+  - ../../infra/kubevirt
+  - ../../topologies/demo-kubevirt
+  - ../../zones/north/kubevirt
+  - ../../zones/south/kubevirt
+  - ../../zones/east/kubevirt
+  - ../../bootstrap/kubeadm/kubevirt
+  - ../../control-plane/kubeadm/kubevirt

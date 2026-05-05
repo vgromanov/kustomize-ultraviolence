@@ -1,0 +1,16 @@
+# Local test harness: mirrors Flux (path /base + same spec.components as manifest).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base/manifests
+components:
+  - ../../_refs
+  - ../../infra/kubevirt
+  - ../../control-plane/kamaji
+  - ../../control-plane/kamaji-mz
+  - ../../infra/kubevirt/kamaji-network
+  - ../../topologies/demo-kubevirt
+  - ../../zones/north/kubevirt
+  - ../../zones/south/kubevirt
+  - ../../zones/east/kubevirt
+  - ../../bootstrap/kubeadm/kubevirt-kamaji

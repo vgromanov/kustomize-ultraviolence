@@ -1,0 +1,12 @@
+- op: replace
+  path: /spec/template/spec/bootstrap/configRef/kind
+  value: KubeadmConfigTemplate
+- op: replace
+  path: /spec/template/spec/bootstrap/configRef/name
+  value: ${clusterName}-worker
+- op: replace
+  path: /spec/template/spec/infrastructureRef/kind
+  value: KubevirtMachineTemplate
+- op: replace
+  path: /spec/template/spec/infrastructureRef/name
+  value: worker

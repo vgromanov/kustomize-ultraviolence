@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: kamaji-join-discovery-to-kcs
+target:
+  kind: KubeadmConfigSpec
+  name: kcs
+patch: |-
+  - op: add
+    path: /spec/joinConfiguration/discovery
+    value:
+      bootstrapToken:
+        apiServerEndpoint: ${clusterName}-cp.${clusterName}.svc:6443

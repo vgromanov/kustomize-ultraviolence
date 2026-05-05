@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+components:
+  - ../../../../_refs
+
+transformers:
+  - ../../_prefixes/md-zone
+
+resources:
+  - ../../../../nodes/kubevirt
+patches:
+  - target:
+      kind: MachineDeployment
+      name: mdw-0
+    patch: |-
+      - op: add
+        path: /spec/template/metadata/labels/topology.kubernetes.io~1region
+        value: sitea
+      - op: add
+        path: /spec/template/metadata/labels/topology.kubernetes.io~1zone
+        value: south

@@ -1,25 +1,21 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
-resources:
-  - kubeadmcontrolplane.yaml
-  - vspheremachinetemplate-cp.yaml
-
 components:
-  - ../../_refs
+  - ../common
   - kube-vip
+
+resources:
+  - vspheremachinetemplate-cp.yaml
 
 transformers:
   - transformers/vsphere-cp-network-from-topology.yaml
   - _kcs-cp-additions/
-  - ../../bootstrap/kubeadm/_replacements/hack-netplan/
+  - ../../../bootstrap/kubeadm/_replacements/hack-netplan/
   - _replacements/kube-vip/
   - _replacements/kcs-to-kcp/
 
 patches:
-  - target:
-      kind: Cluster
-    path: patches/cluster.yaml
   - target:
       kind: KubeadmControlPlane
     path: patches/kubeadmcontrolplane-infra-kind.yaml

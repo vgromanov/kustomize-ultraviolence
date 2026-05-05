@@ -1,0 +1,49 @@
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: KubevirtMachineTemplate
+metadata:
+  name: cp-kubevirt
+  labels:
+    cluster.x-k8s.io/control-plane: "true"
+  annotations:
+    internal.config.kubernetes.io/needsHashSuffix: enabled
+spec:
+  template:
+    spec:
+      virtualMachineBootstrapCheck:
+        checkStrategy: ssh
+      virtualMachineTemplate:
+        metadata:
+          namespace: ${clusterName}
+        spec:
+          runStrategy: Always
+          template:
+            spec:
+              architecture: amd64
+              domain:
+                cpu:
+                  cores: ${cpCores}
+                devices:
+                  disks:
+                    - disk:
+                        bus: virtio
+                      name: containervolume
+                  networkInterfaceMultiqueue: true
+                machine:
+                  type: q35
+                resources:
+                  requests:
+                    memory: ${cpMem}Mi
+              evictionStrategy: External
+              readinessProbe:
+                httpGet:
+                  path: /readyz
+                  port: 6443
+                  scheme: HTTPS
+                timeoutSeconds: 15
+                periodSeconds: 1
+                successThreshold: 1
+                failureThreshold: 3
+              volumes:
+                - containerDisk:
+                    image: ${flatcarContainerDisk}
+                  name: containervolume

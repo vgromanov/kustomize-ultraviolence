@@ -1,0 +1,50 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: test
+  labels:
+    cluster.x-k8s.io/cluster-name: test
+  annotations:
+    kustomize.toolkit.fluxcd.io/kustomization-path: "/base"
+spec:
+  components:
+    - ../_refs
+    - ../infra/kubevirt
+    - ../control-plane/kamaji
+    - ../control-plane/kamaji-mz
+    - ../infra/kubevirt/kamaji-network
+    - ../topologies/demo-kubevirt
+    - ../zones/north/kubevirt
+    - ../zones/south/kubevirt
+    - ../zones/east/kubevirt
+    - ../bootstrap/kubeadm/kubevirt-kamaji
+  force: false
+  prune: true
+  interval: 10m0s
+  path: /base
+  sourceRef:
+    kind: GitRepository
+    name: capi-mgmt
+    namespace: flux-system
+  postBuild:
+    substitute:
+      breederCluster: management.example.com
+      bundleRelease: bundle-v1.30-rolling-release
+      clusterFQDN: demo-kv-kamaji.cluster.example.com
+      clusterName: demo-kv-kamaji
+      clusterVRF: DEMO-VRF
+      controlPlaneEndpoint: 127.0.0.1
+      flatcarVersion: "4230.1.1"
+      kubeVersion: v1.29.15
+      kubevirtControlPlaneServiceType: ClusterIP
+      imageRepository: "${imageRepository}"
+      artifactBaseUrl: "${artifactBaseUrl}"
+      podCIDR: 10.128.0.0/16
+      profileName: dev-minimal
+      svcCIDR: 10.96.0.0/16
+      sshKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyReplaceWithYourOwn ops@example.com
+    substituteFrom:
+      - kind: ConfigMap
+        name: flux-cluster-vars
+      - kind: Secret
+        name: flux-cluster-secrets

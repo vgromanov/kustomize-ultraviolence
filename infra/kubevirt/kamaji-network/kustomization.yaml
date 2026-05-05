@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+patches:
+  - target:
+      group: controlplane.cluster.x-k8s.io
+      kind: KamajiControlPlane
+    patch: |-
+      - op: replace
+        path: /spec/network/serviceType
+        value: ClusterIP
+      - op: replace
+        path: /spec/network/certSANs
+        value:
+          - ${clusterName}-cp.${clusterName}.svc.${breederCluster}
+          - ${clusterName}-cp.${clusterName}.svc
+          - ${clusterName}.${breederCluster}

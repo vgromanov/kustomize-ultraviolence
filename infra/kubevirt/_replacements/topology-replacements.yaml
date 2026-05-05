@@ -1,0 +1,45 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: topology-replacements-kubevirt
+replacements:
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.groups.worker.replicas
+    targets:
+      - select:
+          kind: MachineDeployment
+          name: mdw-0
+        fieldPaths:
+          - spec.replicas
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.groups.worker.vmCores
+    targets:
+      - select:
+          kind: KubevirtMachineTemplate
+          name: worker
+        fieldPaths:
+          - spec.template.spec.virtualMachineTemplate.spec.template.spec.domain.cpu.cores
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.groups.worker.vmMemory
+    targets:
+      - select:
+          kind: KubevirtMachineTemplate
+          name: worker
+        fieldPaths:
+          - spec.template.spec.virtualMachineTemplate.spec.template.spec.domain.resources.requests.memory
+  - source:
+      kind: ZoneTopology
+      name: zone-topology
+      fieldPath: spec.groups.worker.flatcarContainerDisk
+    targets:
+      - select:
+          kind: KubevirtMachineTemplate
+          name: worker
+        fieldPaths:
+          - spec.template.spec.virtualMachineTemplate.spec.template.spec.volumes.0.containerDisk.image

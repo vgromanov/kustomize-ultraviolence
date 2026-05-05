@@ -1,0 +1,4 @@
+# Provider-specific infra API kind for KubeadmControlPlane machineTemplate (KubeVirt CAPK).
+- op: replace
+  path: /spec/machineTemplate/spec/infrastructureRef/kind
+  value: KubevirtMachineTemplate
