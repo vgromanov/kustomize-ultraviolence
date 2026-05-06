@@ -36,7 +36,7 @@ spec:
       controlPlaneEndpoint: 127.0.0.1
       flatcarVersion: "4230.1.1"
       kubeVersion: v1.29.15
-      kubevirtControlPlaneServiceType: ClusterIP
+      kubevirtControlPlaneServiceType: LoadBalancer
       imageRepository: "${imageRepository}"
       artifactBaseUrl: "${artifactBaseUrl}"
       podCIDR: 10.128.0.0/16

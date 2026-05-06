@@ -1,0 +1,12 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: kcs-kubevirt-remove-coreos-hostname
+target:
+  kind: KubeadmConfigSpec
+  name: kcs
+patch: |-
+  - op: remove
+    path: /spec/joinConfiguration/nodeRegistration/name
+  - op: remove
+    path: /spec/initConfiguration/nodeRegistration/name

@@ -39,12 +39,12 @@ spec:
       flatcarVersion: "4230.1.1"
       flatcarContainerDisk: registry.example.com/org/kubevirt/containerdisks/flatcar:4230.1.1
       kubeVersion: v1.30.1
-      kubevirtControlPlaneServiceType: ClusterIP
+      kubevirtControlPlaneServiceType: LoadBalancer
       imageRepository: "${imageRepository}"
       artifactBaseUrl: "${artifactBaseUrl}"
-      podCIDR: 10.243.0.0/16
+      podCIDR: 10.129.0.0/16
       profileName: dev-minimal
-      svcCIDR: 10.95.0.0/16
+      svcCIDR: 10.97.0.0/16
       sshKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyReplaceWithYourOwn ops@example.com
     substituteFrom:
       - kind: ConfigMap

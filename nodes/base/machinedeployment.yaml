@@ -4,7 +4,7 @@ metadata:
   name: mdw-0
 spec:
   clusterName: ${clusterName}
-  replicas: ${workerCount}
+  replicas: 1
   selector:
     matchLabels:
       cluster.x-k8s.io/cluster-name: ${clusterName}

@@ -15,6 +15,9 @@ spec:
         spec:
           runStrategy: Always
           template:
+            metadata:
+              annotations:
+                kubevirt.io/allow-pod-bridge-network-live-migration: "true"
             spec:
               architecture: amd64
               domain:

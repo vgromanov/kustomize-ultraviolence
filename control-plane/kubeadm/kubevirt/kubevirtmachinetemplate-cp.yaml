@@ -17,6 +17,9 @@ spec:
         spec:
           runStrategy: Always
           template:
+            metadata:
+              annotations:
+                kubevirt.io/allow-pod-bridge-network-live-migration: "true"
             spec:
               architecture: amd64
               domain:
@@ -34,15 +37,6 @@ spec:
                   requests:
                     memory: ${cpMem}Mi
               evictionStrategy: External
-              readinessProbe:
-                httpGet:
-                  path: /readyz
-                  port: 6443
-                  scheme: HTTPS
-                timeoutSeconds: 15
-                periodSeconds: 1
-                successThreshold: 1
-                failureThreshold: 3
               volumes:
                 - containerDisk:
                     image: ${flatcarContainerDisk}

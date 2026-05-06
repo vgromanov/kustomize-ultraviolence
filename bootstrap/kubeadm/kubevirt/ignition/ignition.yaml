@@ -1,0 +1,166 @@
+storage:
+  directories:
+  - path: /opt/libexec
+    mode: 0755
+  - path: /opt/libexec.work
+    mode: 0755
+  files:
+  - path: /etc/crictl.yaml
+    filesystem: root
+    mode: 0644
+    contents:
+      inline: |
+        runtime-endpoint: unix:///run/containerd/containerd.sock
+  - path: /etc/sysconfig/kubelet
+    filesystem: root
+    mode: 0644
+    contents:
+      inline: |
+        KUBELET_EXTRA_ARGS=--pod-infra-container-image=${imageRepository}/pause:3.6
+  - path: /etc/ssl/certs/internal-root-ca.pem
+    filesystem: root
+    mode: 0744
+    contents:
+      inline: |
+        # PLACEHOLDER: add your organization root CA PEM (not distributed with this public repo).
+        # Replace this block in a private fork, or use a patched overlay.
+  - path: /etc/containerd/config.toml
+    filesystem: root
+    mode: 0744
+    contents:
+      inline: |
+        version = 2
+
+        imports = ["/etc/containerd/conf.d/*.toml"]
+
+        [plugins]
+          [plugins."io.containerd.grpc.v1.cri"]
+            sandbox_image = "${imageRepository}/pause:3.9"
+          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+            runtime_type = "io.containerd.runc.v2"
+          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+            SystemdCgroup = true
+  - path: /etc/systemd/timesyncd.conf
+    filesystem: root
+    mode: 0744
+    contents:
+      inline: |
+        [Time]
+        NTP=pool.ntp.org
+  - path: /etc/sysctl.d/10-oss_vm_map_max_count.conf
+    filesystem: root
+    mode: 0744
+    contents:
+      inline: |
+        # Opensearch related requirements
+        vm.max_map_count = 262144
+  - path: /etc/sysctl.d/11-kube_logs_inotify_watches.conf
+    filesystem: root
+    mode: 0744
+    contents:
+      inline: |
+        # Raise fsnotify limit for kube logs
+        fs.inotify.max_user_watches = 1048576
+        fs.inotify.max_user_instances = 8192
+systemd:
+  units:
+  - name: update-ca.service
+    enabled: true
+    contents: |
+      [Unit]
+      Description=Updates CA certificates
+      After=nss-lookup.target
+      After=network-online.target
+      Wants=network-online.target
+      [Service]
+      Type=oneshotq
+      ExecStart=/sbin/update-ca-certificates
+      [Install]
+      WantedBy=multi-user.target
+  - name: hack-netplan.service
+    enabled: true
+    contents: |
+      [Unit]
+      Description=Hack netplan config
+      After=network-pre.target
+      [Service]
+      Type=oneshot
+      ExecStart=/opt/hack.sh
+      [Install]
+      WantedBy=network-online.target
+  - name: kubeadm.service
+    enabled: true
+    dropins:
+    - name: 10-flatcar.conf
+      contents: |
+        [Unit]
+        After=network-online.target
+  - name: kubelet.service
+    enabled: true
+    contents: |
+      [Unit]
+      Description=kubelet: The Kubernetes Node Agent
+      Wants=network-online.target
+      After=network-online.target
+
+      [Service]
+      ExecStart=/opt/bin/kubelet
+      Restart=always
+      StartLimitInterval=0
+      RestartSec=10
+
+      [Install]
+      WantedBy=multi-user.target
+    dropins:
+    - name: 10-kubeadm.conf
+      contents: |
+        [Service]
+        Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
+        Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
+        # This is a file that "kubeadm init" and "kubeadm join" generate at runtime, populating
+        # the KUBELET_KUBEADM_ARGS variable dynamically
+        EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
+        # This is a file that the user can use for overrides of the kubelet args as a last resort. Preferably,
+        # the user should use the .NodeRegistration.KubeletExtraArgs object in the configuration files instead.
+        # KUBELET_EXTRA_ARGS should be sourced from this file.
+        EnvironmentFile=-/etc/default/kubelet
+        ExecStart=
+        ExecStart=/opt/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
+  - name: usr-libexec.mount
+    enabled: true
+    contents: |
+      [Unit]
+      Description=Kubernetes flex volume plugin directory
+
+      [Mount]
+      What=overlay
+      Where=/usr/libexec
+      Type=overlay
+      Options=lowerdir=/usr/libexec,workdir=/opt/libexec.work,upperdir=/opt/libexec
+
+      [Install]
+      WantedBy=multi-user.target
+  - name: containerd.service
+    enabled: true
+    contents: |
+      [Unit]
+      Description=containerd container runtime
+      After=network.target local-fs.target
+
+      [Service]
+      ExecStartPre=-/sbin/modprobe overlay
+      ExecStart=/bin/containerd
+
+      Type=notify
+      Delegate=yes
+      KillMode=process
+      Restart=always
+      RestartSec=5
+      LimitNPROC=infinity
+      LimitCORE=infinity
+      LimitNOFILE=infinity
+      TaksMax=infinity
+      OOMScoreAdjust=-999
+
+      [Install]
+      WantedBy=multi-user.target

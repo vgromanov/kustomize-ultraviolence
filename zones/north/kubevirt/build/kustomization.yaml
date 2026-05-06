@@ -20,3 +20,18 @@ patches:
       - op: add
         path: /spec/template/metadata/labels/topology.kubernetes.io~1zone
         value: north
+  - target:
+      kind: KubevirtMachineTemplate
+      name: worker
+    patch: |-
+      - op: add
+        path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/affinity
+        value:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: topology.kubernetes.io/zone
+                      operator: In
+                      values:
+                        - north

@@ -8,3 +8,6 @@ patches:
   - target:
       kind: Cluster
     path: patches/cluster.yaml
+  - target:
+      kind: Namespace
+    path: patches/namespace.yaml

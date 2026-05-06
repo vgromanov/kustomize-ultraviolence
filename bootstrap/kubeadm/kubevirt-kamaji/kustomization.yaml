@@ -6,12 +6,13 @@ resources:
 components:
   - ../kubeadmconfigspec
   - ../vsphere/hack-netplan
-  - ../vsphere/ignition
+  - ../kubevirt/ignition
   - ../../../addons/ssh-keys
 
 transformers:
   - ../_replacements/hack-netplan/
   - ../_replacements/ignition/
+  - _transformers/kcs-remove-coreos-hostname.yaml
   - kamaji-join-discovery-to-kcs/
   - ../_replacements/kcs-to-kct/
 

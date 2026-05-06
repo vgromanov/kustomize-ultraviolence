@@ -30,21 +30,19 @@ patch: |-
           - api.${clusterFQDN}
           - kubernetes.default.svc.${clusterFQDN}
         extraArgs:
-          cloud-provider: external
+          - name: cloud-provider
+            value: external
       controllerManager:
         extraArgs:
           - name: cloud-provider
             value: external
-  - op: add
-    path: /spec/skipPhases
-    value:
-      - addon/kube-proxy
   - op: replace
     path: /spec/initConfiguration
     value:
+      skipPhases:
+        - addon/kube-proxy
       nodeRegistration:
         criSocket: /var/run/containerd/containerd.sock
-        name: $${COREOS_CUSTOM_HOSTNAME}
         kubeletExtraArgs:
           - name: cloud-provider
             value: external
@@ -55,7 +53,6 @@ patch: |-
         ignorePreflightErrors:
           - DirAvailable--etc-kubernetes-manifests
         criSocket: /var/run/containerd/containerd.sock
-        name: $${COREOS_CUSTOM_HOSTNAME}
         kubeletExtraArgs:
           - name: cloud-provider
             value: external

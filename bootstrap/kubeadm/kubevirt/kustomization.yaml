@@ -6,12 +6,13 @@ resources:
 components:
   - ../kubeadmconfigspec
   - ../vsphere/hack-netplan
-  - ../vsphere/ignition
+  - ignition
   - ../../../addons/ssh-keys
 
 transformers:
   - ../_replacements/hack-netplan/
   - ../_replacements/ignition/
+  - _transformers/kcs-remove-coreos-hostname.yaml
   - ../_replacements/kcs-to-kct/
 
 patches:
