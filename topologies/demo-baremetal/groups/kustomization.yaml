@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - north-mdw-0-enp33-gpu.yaml
+  - north-mdw-0-enp33-nongpu.yaml
+  - north-mdw-0-ens81-gpu.yaml
+  - north-mdw-0-ens81-nongpu.yaml
+  - north-mdw-0-eno5eno6-gpu.yaml
+  - north-mdw-0-eno5eno6-nongpu.yaml
+  - south-mdw-0-enp33-gpu.yaml
+  - south-mdw-0-enp33-nongpu.yaml
+  - south-mdw-0-ens81-gpu.yaml
+  - south-mdw-0-ens81-nongpu.yaml
+  - south-mdw-0-eno5eno6-gpu.yaml
+  - south-mdw-0-eno5eno6-nongpu.yaml
+  - east-mdw-0-enp33-gpu.yaml
+  - east-mdw-0-enp33-nongpu.yaml
+  - east-mdw-0-ens81-gpu.yaml
+  - east-mdw-0-ens81-nongpu.yaml
+  - east-mdw-0-eno5eno6-gpu.yaml
+  - east-mdw-0-eno5eno6-nongpu.yaml

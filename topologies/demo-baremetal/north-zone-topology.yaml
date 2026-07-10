@@ -8,19 +8,6 @@ spec:
   zone: north
   # Mirrors demo-vsphere shape so shared base/topology-replacements.yaml sources exist for Flux (path /base).
   vcNetwork: ""
-  groups:
-    enp33-gpu:
-      replicas: 1
-    enp33-nongpu:
-      replicas: 1
-    ens81-gpu:
-      replicas: 1
-    ens81-nongpu:
-      replicas: 1
-    eno5eno6-gpu:
-      replicas: 1
-    eno5eno6-nongpu:
-      replicas: 1
   ippool:
     dnsServers:
       - 192.0.2.10

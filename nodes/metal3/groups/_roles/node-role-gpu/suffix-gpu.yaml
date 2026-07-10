@@ -13,6 +13,8 @@ fieldSpecs:
   - kind: NodeTopology
     path: metadata/name
   - kind: ReplacementTransformer
+    path: metadata/name
+  - kind: ReplacementTransformer
     path: replacements/source/name
   - kind: ReplacementTransformer
     path: replacements/targets/select/name
