@@ -8,3 +8,6 @@ fieldSpecs:
   - path: metadata/annotations
     kind: ZoneTopology
     create: true
+  - path: metadata/annotations
+    kind: GroupTopology
+    create: true

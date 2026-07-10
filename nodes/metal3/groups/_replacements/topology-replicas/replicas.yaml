@@ -1,0 +1,15 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: topology-replicas
+replacements:
+  - source:
+      kind: GroupTopology
+      name: mdw-0
+      fieldPath: spec.replicas
+    targets:
+      - select:
+          kind: MachineDeployment
+          name: mdw-0
+        fieldPaths:
+          - spec.replicas

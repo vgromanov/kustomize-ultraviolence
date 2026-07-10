@@ -1,0 +1,7 @@
+apiVersion: topology.clusters.local/v1alpha1
+kind: GroupTopology
+metadata:
+  name: east-mdw-0-enp33-gpu
+  annotations: {}
+spec:
+  replicas: 1

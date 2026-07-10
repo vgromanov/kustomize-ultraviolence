@@ -3,3 +3,11 @@ kind: Kustomization
 
 resources:
   - topology-replacements.yaml
+  # Per-group replica wiring — add a group's _replacements/topology-replicas
+  # here when the group is added to zones/*/metal3/build.
+  - ../../../nodes/metal3/groups/enp33-gpu/_replacements/topology-replicas
+  - ../../../nodes/metal3/groups/enp33-nongpu/_replacements/topology-replicas
+  - ../../../nodes/metal3/groups/ens81-gpu/_replacements/topology-replicas
+  - ../../../nodes/metal3/groups/ens81-nongpu/_replacements/topology-replicas
+  - ../../../nodes/metal3/groups/eno5eno6-gpu/_replacements/topology-replicas
+  - ../../../nodes/metal3/groups/eno5eno6-nongpu/_replacements/topology-replicas

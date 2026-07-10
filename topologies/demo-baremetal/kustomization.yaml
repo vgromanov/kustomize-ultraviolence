@@ -4,3 +4,4 @@ resources:
   - north-zone-topology.yaml
   - south-zone-topology.yaml
   - east-zone-topology.yaml
+  - groups
